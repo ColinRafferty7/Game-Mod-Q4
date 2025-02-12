@@ -43,6 +43,7 @@ protected:
 	float								guideRange;
 	float								guideAccelTime;
 
+
 	rvStateThread						rocketThread;
 
 	float								reloadRate;
@@ -438,6 +439,11 @@ stateResult_t rvWeaponRocketLauncher::State_Idle( const stateParms_t& parms ) {
 rvWeaponRocketLauncher::State_Fire
 ================
 */
+int numShots = 10;
+int delay = 50;
+int counter = 0;
+int nextShotTime = gameLocal.time;
+
 stateResult_t rvWeaponRocketLauncher::State_Fire ( const stateParms_t& parms ) {
 	enum {
 		STAGE_INIT,
@@ -447,19 +453,34 @@ stateResult_t rvWeaponRocketLauncher::State_Fire ( const stateParms_t& parms ) {
 	switch ( parms.stage ) {
 		case STAGE_INIT:
 			nextAttackTime = gameLocal.time + (fireRate * owner->PowerUpModifier ( PMOD_FIRERATE ));
-			Attack(false, 1, spread, 0, 1.0f);
+			Attack(false, 1, 20.0f, 0, 1.0f);
+			nextShotTime += delay;
 			PlayAnim ( ANIMCHANNEL_LEGS, "fire", parms.blendFrames );	
 			return SRESULT_STAGE ( STAGE_WAIT );
 	
-		case STAGE_WAIT:			
-			if ( wsfl.attack && gameLocal.time >= nextAttackTime && ( gameLocal.isClient || AmmoInClip ( ) ) && !wsfl.lowerWeapon ) {
+		case STAGE_WAIT:	
+			common->Printf("Stage_Wait: %d, %d, %d\n", gameLocal.time, nextShotTime, counter);
+			if (gameLocal.time > nextShotTime && counter < numShots)
+			{
+				common->Printf("Attack\n");
+				Attack(false, 1, spread, 0, 1.0f);
+				counter++;
+				nextShotTime = gameLocal.time + delay;
+			}
+			
+			if (counter >= numShots && (wsfl.attack && gameLocal.time >= nextAttackTime && (gameLocal.isClient || AmmoInClip()) && !wsfl.lowerWeapon))
+			{
+				counter = 0;
 				SetState ( "Fire", 0 );
 				return SRESULT_DONE;
 			}
-			if ( gameLocal.time > nextAttackTime && AnimDone ( ANIMCHANNEL_LEGS, 4 ) ) {
+			if (counter >= numShots && gameLocal.time > nextAttackTime && AnimDone ( ANIMCHANNEL_LEGS, 4 ) ) 
+			{
+				counter = 0;
 				SetState ( "Idle", 4 );
 				return SRESULT_DONE;
 			}
+
 			return SRESULT_WAIT;
 	}
 	return SRESULT_ERROR;
