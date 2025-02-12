@@ -2506,7 +2506,6 @@ void rvWeapon::Attack( bool altAttack, int num_attacks, float spread, float fuse
 	idVec3 muzzleOrigin;
 	idMat3 muzzleAxis;
 
-	
 	if ( !viewModel ) {
 		common->Warning( "NULL viewmodel %s\n", __FUNCTION__ );
 		return;
@@ -2521,13 +2520,13 @@ void rvWeapon::Attack( bool altAttack, int num_attacks, float spread, float fuse
 		// check if we're out of ammo or the clip is empty
 		int ammoAvail = owner->inventory.HasAmmo( ammoType, ammoRequired );
 		if ( !ammoAvail || ( ( clipSize != 0 ) && ( ammoClip <= 0 ) ) ) {
-			return;
+			//return;
 		}
 
 		owner->inventory.UseAmmo( ammoType, ammoRequired );
 		if ( clipSize && ammoRequired ) {
  			clipPredictTime = gameLocal.time;	// mp client: we predict this. mark time so we're not confused by snapshots
-			ammoClip -= 1;
+			//ammoClip -= 1;
 		}
 
 		// wake up nearby monsters

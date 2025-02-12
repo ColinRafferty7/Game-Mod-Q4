@@ -86,8 +86,6 @@ void rvWeaponBlaster::Flashlight ( bool on ) {
 	}
 }
 
-//ColinComment 
-
 /*
 ================
 rvWeaponBlaster::UpdateAttack

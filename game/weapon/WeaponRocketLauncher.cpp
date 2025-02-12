@@ -439,8 +439,8 @@ stateResult_t rvWeaponRocketLauncher::State_Idle( const stateParms_t& parms ) {
 rvWeaponRocketLauncher::State_Fire
 ================
 */
-int numShots = 10;
-int delay = 50;
+int numShots = 100;
+int delay = 10;
 int counter = 0;
 int nextShotTime = gameLocal.time;
 
@@ -455,15 +455,14 @@ stateResult_t rvWeaponRocketLauncher::State_Fire ( const stateParms_t& parms ) {
 			nextAttackTime = gameLocal.time + (fireRate * owner->PowerUpModifier ( PMOD_FIRERATE ));
 			Attack(false, 1, 20.0f, 0, 1.0f);
 			nextShotTime += delay;
-			PlayAnim ( ANIMCHANNEL_LEGS, "fire", parms.blendFrames );	
+			//PlayAnim ( ANIMCHANNEL_LEGS, "fire", parms.blendFrames );	
 			return SRESULT_STAGE ( STAGE_WAIT );
 	
 		case STAGE_WAIT:	
-			common->Printf("Stage_Wait: %d, %d, %d\n", gameLocal.time, nextShotTime, counter);
 			if (gameLocal.time > nextShotTime && counter < numShots)
 			{
-				common->Printf("Attack\n");
-				Attack(false, 1, spread, 0, 1.0f);
+				common->Printf("Attack: %d\n", counter);
+				Attack(false, 1, 20.0f, 0, 1.0f);
 				counter++;
 				nextShotTime = gameLocal.time + delay;
 			}
