@@ -206,6 +206,7 @@ void idInventory::Clear( void ) {
 	armor				= 0;
 	maxarmor			= 0;
 	secretAreasDiscovered = 0;
+	attackSpeed			= 0;
 
 	memset( ammo, 0, sizeof( ammo ) );
 
@@ -340,6 +341,8 @@ void idInventory::RestoreInventory( idPlayer *owner, const idDict &dict ) {
 	armor			= dict.GetInt( "armor", "50" );
 	maxarmor		= dict.GetInt( "maxarmor", "100" );
 
+	attackSpeed		= 10;
+
 	// ammo
 	for( i = 0; i < MAX_AMMOTYPES; i++ ) {
 		name = rvWeapon::GetAmmoNameForIndex ( i );
@@ -404,6 +407,7 @@ void idInventory::Save( idSaveGame *savefile ) const {
 	savefile->WriteInt( powerups );
 	savefile->WriteInt( armor );
 	savefile->WriteInt( maxarmor );
+	
 
 	for( i = 0; i < MAX_AMMO; i++ ) {
 		savefile->WriteInt( ammo[ i ] );
@@ -608,6 +612,11 @@ const char * idInventory::AmmoClassForWeaponClass( const char *weapon_classname 
 	}
 
 	return decl->dict.GetString( "ammoType" );
+}
+
+int idInventory::GetAttackSpeed(void)
+{
+	return attackSpeed;
 }
 
 // RAVEN BEGIN
