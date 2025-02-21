@@ -195,7 +195,6 @@ const int	ASYNC_PLAYER_TOURNEY_STATUS_BITS = idMath::BitsForInteger( PTS_NUM_STA
 class idInventory {
 public:
 	int						maxHealth;
-	int						attackSpeed;
 	int						weapons;
 // RITUAL BEGIN
 // squirrel: Mode-agnostic buymenus
@@ -243,7 +242,6 @@ public:
 	int						MaxAmmoForAmmoClass( idPlayer *owner, const char *ammo_classname ) const;
 	int						AmmoIndexForWeaponClass( const char *weapon_classname, int *ammoRequired = NULL );
 	const char *			AmmoClassForWeaponClass( const char *weapon_classname);
-	int						GetAttackSpeed( void );
 
 // RAVEN BEGIN
 // mekberg: if the player can pick up the ammo at this time
@@ -415,6 +413,8 @@ public:
 	bool					vsMsgState;
 
 	int						lastPickupTime;
+
+	int						attackSpeed;
 //RAVEN BEGIN
 // asalmon: the eneny the player is most likely currently aiming at
 #ifdef _XBOX
@@ -796,6 +796,8 @@ public:
 	void					ClampCash( float minCash, float maxCash );
 	void					SetCash( float newCashAmount );
 	void					ResetCash();
+
+	int						GetAttackSpeed(void);
 // RITUAL END
 
 protected:

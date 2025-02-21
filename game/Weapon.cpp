@@ -623,8 +623,10 @@ void rvWeapon::Spawn ( void ) {
 	weaponOffsetTime			= spawnArgs.GetFloat( "weaponOffsetTime", "400" );
 	weaponOffsetScale			= spawnArgs.GetFloat( "weaponOffsetScale", "0.005" );
 
-	fireRate	= SEC2MS ( spawnArgs.GetFloat ( "fireRate" ) );
-	altFireRate	= SEC2MS ( spawnArgs.GetFloat ( "altFireRate" ) );
+	//fireRate	= SEC2MS ( spawnArgs.GetFloat ( "fireRate" ) );
+	fireRate = owner->GetAttackSpeed();
+	//altFireRate	= SEC2MS ( spawnArgs.GetFloat ( "altFireRate" ) );
+	altFireRate = owner->GetAttackSpeed();
 	if( altFireRate == 0 ) {
 		altFireRate = fireRate;
 	}
