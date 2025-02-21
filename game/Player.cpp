@@ -14085,4 +14085,10 @@ int idPlayer::GetAttackSpeed(void)
 	return attackSpeed;
 }
 
+void idPlayer::SetAttackSpeed(int modifier, float multiplier)
+{
+	attackSpeed += modifier;
+	attackSpeed *= multiplier;
+}
+
 // RITUAL END

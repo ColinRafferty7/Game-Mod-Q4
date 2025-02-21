@@ -797,7 +797,8 @@ public:
 	void					SetCash( float newCashAmount );
 	void					ResetCash();
 
-	int						GetAttackSpeed(void);
+	int						GetAttackSpeed( void );
+	void					SetAttackSpeed( int modifier, float multiplier);
 // RITUAL END
 
 protected:
