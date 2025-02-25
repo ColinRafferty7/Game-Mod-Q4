@@ -1415,7 +1415,7 @@ void idGameLocal::LoadMap( const char *mapName, int randseed ) {
 // RITUAL END
 
 	vacuumAreaNum = -1;		// if an info_vacuum is spawned, it will set this
-
+//TestComment
 // RAVEN BEGIN
 // abahr
 	gravityInfo.Clear();
