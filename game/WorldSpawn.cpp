@@ -1,3 +1,4 @@
+unbindall
 /*
 game_worldspawn.cpp
 

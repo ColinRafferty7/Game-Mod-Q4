@@ -2842,6 +2842,7 @@ void idPlayer::SpawnToPoint( const idVec3 &spawn_origin, const idAngles &spawn_a
 		SetAxis( spawn_angles.ToMat3() );
 // RAVEN END
 	} else {
+
 		spec_origin = spawn_origin;
 		spec_origin[ 2 ] += pm_normalheight.GetFloat();
 		spec_origin[ 2 ] += SPECTATE_RAISE;
@@ -8553,6 +8554,15 @@ void idPlayer::PerformImpulse( int impulse ) {
    			}
    			break;
    		}
+
+		case IMPULSE_23: 
+		{
+			if (gameLocal.isClient || entityNumber == gameLocal.localClientNum)
+			{
+				DropBomb();
+			}
+		
+		}
 				
 		case IMPULSE_28: {
  			if ( gameLocal.isClient || entityNumber == gameLocal.localClientNum ) {
@@ -14089,6 +14099,11 @@ void idPlayer::SetAttackSpeed(int modifier, float multiplier)
 {
 	attackSpeed += modifier;
 	attackSpeed *= multiplier;
+}
+
+void idPlayer::DropBomb(void)
+{
+	common->Printf("works");
 }
 
 // RITUAL END

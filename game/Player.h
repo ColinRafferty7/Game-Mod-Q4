@@ -799,6 +799,8 @@ public:
 
 	int						GetAttackSpeed( void );
 	void					SetAttackSpeed( int modifier, float multiplier);
+
+	void					DropBomb( void );
 // RITUAL END
 
 protected:
