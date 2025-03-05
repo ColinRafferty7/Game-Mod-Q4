@@ -1345,6 +1345,10 @@ idPlayer::idPlayer() {
 	teamDoublerPending		= false;
 
 	attackSpeed = 300;
+
+	coinCount = 5;
+	keyCount = 1;
+	bombCount = 1;
 }
 
 /*
@@ -8559,7 +8563,11 @@ void idPlayer::PerformImpulse( int impulse ) {
 		{
 			if (gameLocal.isClient || entityNumber == gameLocal.localClientNum)
 			{
-				DropBomb();
+				if (bombCount > 0)
+				{
+					DropBomb();
+					bombCount--;
+				}
 			}
 		
 		}

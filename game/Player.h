@@ -415,6 +415,10 @@ public:
 	int						lastPickupTime;
 
 	int						attackSpeed;
+
+	int						coinCount;
+	int						keyCount;
+	int						bombCount;
 //RAVEN BEGIN
 // asalmon: the eneny the player is most likely currently aiming at
 #ifdef _XBOX
