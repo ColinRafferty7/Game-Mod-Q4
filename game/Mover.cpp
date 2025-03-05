@@ -4061,7 +4061,6 @@ idDoor::Save
 ================
 */
 void idDoor::Save( idSaveGame *savefile ) const {
-
 	savefile->WriteFloat( triggersize );
 	savefile->WriteBool( crusher );
 	savefile->WriteBool( noTouch );
@@ -4094,7 +4093,6 @@ idDoor::Restore
 ================
 */
 void idDoor::Restore( idRestoreGame *savefile ) {
-
 	savefile->ReadFloat( triggersize );
 	savefile->ReadBool( crusher );
 	savefile->ReadBool( noTouch );
@@ -4307,6 +4305,7 @@ idDoor::SetAASAreaState
 ================
 */
 void idDoor::SetAASAreaState( bool closed ) {
+	//common->Printf("8 ");
 	aas_area_closed = closed;
 	gameLocal.SetAASAreaState( physicsObj.GetAbsBounds(), AREACONTENTS_CLUSTERPORTAL|AREACONTENTS_OBSTACLE, closed );
 }
@@ -4413,6 +4412,7 @@ idDoor::Use
 ================
 */
 void idDoor::Use( idEntity *other, idEntity *activator ) {
+	//common->Printf("12 ");
 	if ( gameLocal.RequirementMet( activator, requires, removeItem ) ) {
 		if ( syncLock.Length() ) {
 			idEntity *sync = gameLocal.FindEntity( syncLock );
@@ -4493,6 +4493,7 @@ idDoor::IsLocked
 ================
 */
 int idDoor::IsLocked( void ) {
+	//common->Printf("16 ");
 	return spawnArgs.GetInt( "locked" );
 }
 
@@ -4511,6 +4512,7 @@ idDoor::IsNoTouch
 ================
 */
 bool idDoor::IsNoTouch( void ) {
+	//common->Printf("18 ");
 	return noTouch;
 }
 
@@ -4575,6 +4577,7 @@ If we have a frame controller we activate its targets
 ==============================
 */
 void idDoor::ActivateTargets( idEntity *activator ) const {
+	//common->Printf("21 ");
 	if ( doorFrameController.IsValid() && static_cast< const idMover_Binary *>( GetMoveMaster() ) == this && moverState == MOVER_POS1 ) {
 		doorFrameController->ActivateTargets( activator );
 	}
@@ -4714,6 +4717,7 @@ idDoor::Event_Reached_BinaryMover
 ================
 */
 void idDoor::Event_Reached_BinaryMover( void ) {
+	//common->Printf("25 ");
 	if ( moverState == MOVER_2TO1 ) {
 		SetBlocked( false );
 		const idKeyValue *kv = spawnArgs.MatchPrefix( "triggerClosed" );
@@ -4819,6 +4823,7 @@ idDoor::Event_ReturnToPos1
 ================
 */
 void idDoor::Event_ReturnToPos1( void ) {
+	//common->Printf("29 ");
 	idMover_Binary::Event_ReturnToPos1();
 
 	if( doorFrameController.IsValid() ) {
@@ -4833,12 +4838,20 @@ idDoor::Event_Touch
 ================
 */
 void idDoor::Event_Touch( idEntity *other, trace_t *trace ) {
+	common->Printf("%s\n", idStr(this->GetName()).c_str());
+	//common->Printf("30 ");
 	idVec3		contact, translate;
 	idVec3		planeaxis1, planeaxis2, normal;
 	idBounds	bounds;
 
 	if ( !enabled ) {
 		return;
+	}
+
+	if (gameLocal.GetLocalPlayer()->GetKeyCount() > 0)
+	{
+		Event_Activate(this);
+		gameLocal.GetLocalPlayer()->KeyCountMinus();
 	}
 
 	if ( trigger && trace->c.id == trigger->GetId() ) {
@@ -5023,6 +5036,7 @@ Sets the portal associtated with this door to be closed
 ================
 */
 void idDoor::Event_ClosePortal( void ) {
+	//common->Printf("39 ");
 	idMover_Binary *slave;
 	idDoor *slaveDoor;
 

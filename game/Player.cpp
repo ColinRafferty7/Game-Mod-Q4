@@ -14126,4 +14126,14 @@ void idPlayer::DropBomb(void)
 	bomb->GetPhysics()->Activate();
 }
 
+int idPlayer::GetKeyCount( void )
+{
+	return keyCount;
+}
+
+void idPlayer::KeyCountMinus(void)
+{
+	keyCount--;
+}
+
 // RITUAL END

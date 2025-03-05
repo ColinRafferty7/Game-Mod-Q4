@@ -805,6 +805,9 @@ public:
 	void					SetAttackSpeed( int modifier, float multiplier);
 
 	void					DropBomb( void );
+
+	int						GetKeyCount( void );
+	void					KeyCountMinus( void );
 // RITUAL END
 
 protected:
