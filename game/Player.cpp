@@ -14103,7 +14103,19 @@ void idPlayer::SetAttackSpeed(int modifier, float multiplier)
 
 void idPlayer::DropBomb(void)
 {
-	common->Printf("works");
+	idDict args;
+	args.Set("classname", "projectile_grenade");
+
+	idEntity* ent;
+	gameLocal.SpawnEntityDef(args, &ent);
+
+	idProjectile* bomb = static_cast<idProjectile*>(ent);
+	idVec3 launchDir = idVec3(0.0, 0.0, 1.0);
+	bomb->Create(this, this->GetEyePosition(), launchDir, this);
+	//bomb->GetPhysics()->SetClipModel(new idClipModel(bomb->GetModel()), 1.0f);
+	bomb->GetPhysics()->SetContents(CONTENTS_SOLID);
+	bomb->GetPhysics()->SetClipMask(MASK_SHOT_RENDERMODEL);
+	bomb->GetPhysics()->Activate();
 }
 
 // RITUAL END

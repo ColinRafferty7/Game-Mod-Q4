@@ -77,6 +77,7 @@ idProjectile::idProjectile( void ) {
 	launchOrig			= vec3_origin;
 	launchDir			= vec3_origin;
 	launchSpeed			= 0.0f;
+	explodeTime         = gameLocal.time + 3000;
 }
 
 /*
@@ -870,7 +871,6 @@ bool idProjectile::Collide( const trace_t &collision, const idVec3 &velocity, bo
 
 	// if the hit entity takes damage
 	if ( canDamage ) {
-
  		if ( damageDefName[0] != '\0' ) {
 			idVec3 dir = velocity;
 			dir.Normalize();
@@ -908,7 +908,10 @@ bool idProjectile::Collide( const trace_t &collision, const idVec3 &velocity, bo
 // RAVEN BEGIN
 // jshepard: Single Player- if the the player is the attacker and the victim is teammate, don't play any effects.
 // this should make sure that only explosion effects play when the player shoots his comrades. 
-	if( willPlayDamageEffect || spawnArgs.GetBool( "friendly_impact") )	{
+
+	idStr name = idStr(this->GetEntityDefClassName());
+
+	if((idStr::Icmp(name.c_str(), "projectile_grenade") || gameLocal.time > explodeTime) && (willPlayDamageEffect || spawnArgs.GetBool( "friendly_impact") ))	{
 		DefaultDamageEffect( collision, velocity, damageDefName );
 	}
 // RAVEN END
@@ -926,13 +929,20 @@ bool idProjectile::Collide( const trace_t &collision, const idVec3 &velocity, bo
 		}
 	}
 */
-
 	// don't predict explosions on clients
+	if (idStr::Icmp(name.c_str(), "projectile_grenade"))
+	{
+		Explode(&collision, false, ignore);
+	}
+
+	if (!(idStr::Icmp(name.c_str(), "projectile_grenade")) && (gameLocal.time > explodeTime))
+	{
+		Explode(&collision, false, ignore); 
+	}
+
 	if( gameLocal.isClient ) {
 		return true;
 	}
-
-	Explode( &collision, false, ignore );
 
 	return true;
 }
@@ -1335,7 +1345,6 @@ void idProjectile::Event_Touch( idEntity *other, trace_t *trace ) {
 	if ( IsHidden() ) {
 		return;
 	}
-
 	if ( other != owner.GetEntity() ) {
 		idEntity* think = gameLocal.currentThinkingEntity;
 		gameLocal.currentThinkingEntity = this;
