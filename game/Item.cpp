@@ -661,7 +661,7 @@ bool idItem::Pickup( idPlayer *player ) {
 	}
 
 	if ( !GiveToPlayer( player ) ) {
-		return false;
+		//return false;
 	}
 
 	if ( gameLocal.isServer ) {
@@ -679,6 +679,16 @@ bool idItem::Pickup( idPlayer *player ) {
 	ActivateTargets( player );
 
 	player->lastPickupTime = gameLocal.time;
+
+	common->Printf("Pre\n");
+	if (!idStr::Icmp((idStr(this->GetEntityDefClassName()).c_str()), "item_health_pill") && !player->GetHasPill())
+	{
+		player->SetHasPill(true);
+	}
+	if (!idStr::Icmp((idStr(this->GetEntityDefClassName()).c_str()), "item_key"))
+	{
+		player->SetKeyCount(1);
+	}
 
 	//if a placed item and si_weaponStay is on and we're a weapon, don't remove and respawn
 	if ( gameLocal.IsMultiplayer() ) {
@@ -747,19 +757,10 @@ bool idItem::Pickup( idPlayer *player ) {
 		}
 	}
 
-	if (!idStr::Icmp((idStr(this->GetEntityDefClassName()).c_str()), "item_health_pill") && !player->GetHasPill())
-	{
-		player->SetHasPill(true);
-	}
-	if (!idStr::Icmp((idStr(this->GetEntityDefClassName()).c_str()), "item_key"))
-	{
-		player->SetKeyCount(player->GetKeyCount() + 1);
-	}
 	
 	trigger->SetContents( 0 );	
 	
 	StopEffect( "fx_idle" );
-
 	return true;
 }
 

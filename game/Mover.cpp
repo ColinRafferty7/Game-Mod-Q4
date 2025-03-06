@@ -4848,10 +4848,10 @@ void idDoor::Event_Touch( idEntity *other, trace_t *trace ) {
 		return;
 	}
 
-	if (gameLocal.GetLocalPlayer()->GetKeyCount() > 0)
+	if (gameLocal.GetLocalPlayer()->GetKeyCount() > 0 && IsLocked())
 	{
 		Event_Activate(this);
-		gameLocal.GetLocalPlayer()->SetKeyCount(gameLocal.GetLocalPlayer()->GetKeyCount() - 1);
+		gameLocal.GetLocalPlayer()->SetKeyCount(-1);
 	}
 
 	if ( trigger && trace->c.id == trigger->GetId() ) {

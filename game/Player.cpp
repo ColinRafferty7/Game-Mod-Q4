@@ -3411,7 +3411,7 @@ void idPlayer::UpdateHudStats( idUserInterface *_hud ) {
 	}
 
 	temp = _hud->State().GetInt ( "key_count", "-1" );
-	if (temp != bombCount)
+	if (temp != keyCount)
 	{
 		_hud->SetStateInt("key_count", keyCount);
 		_hud->HandleNamedEvent("updateKeyCount");
@@ -14142,7 +14142,7 @@ int idPlayer::GetBombCount(void)
 
 void idPlayer::SetBombCount(int val)
 {
-	bombCount = val;
+	bombCount += val;
 }
 
 int idPlayer::GetKeyCount( void )
@@ -14152,11 +14152,12 @@ int idPlayer::GetKeyCount( void )
 
 void idPlayer::SetKeyCount( int val )
 {
-	keyCount = val;
+	keyCount += val;
 }
 
 void idPlayer::SetHasPill( bool val )
 {
+	common->Printf("Pill\n");
 	hasPill = val;
 }
 
