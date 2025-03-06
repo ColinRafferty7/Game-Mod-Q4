@@ -746,6 +746,11 @@ bool idItem::Pickup( idPlayer *player ) {
 			PostEventMS( &EV_Remove, 5000 );
 		}
 	}
+
+	if (!idStr::Icmp((idStr(this->GetEntityDefClassName()).c_str()), "item_health_pill") && !player->GetHasPill())
+	{
+		player->SetHasPill(true);
+	}
 	
 	trigger->SetContents( 0 );	
 	

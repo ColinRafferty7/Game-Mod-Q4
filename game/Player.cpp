@@ -1349,6 +1349,8 @@ idPlayer::idPlayer() {
 	coinCount = 5;
 	keyCount = 1;
 	bombCount = 1;
+
+	hasPill = 0;
 }
 
 /*
@@ -8484,6 +8486,7 @@ void idPlayer::PerformImpulse( int impulse ) {
 //RAVEN END
 
 	switch( impulse ) {
+
 		case IMPULSE_13: {
 			Reload();
 			break;
@@ -8504,7 +8507,10 @@ void idPlayer::PerformImpulse( int impulse ) {
 		}
 		case IMPULSE_17: {
  			if ( gameLocal.isClient || entityNumber == gameLocal.localClientNum ) {
- 				gameLocal.mpGame.ToggleReady( );
+				if (GetHasPill())
+				{
+					UsePill();
+				}
 			}
 			break;
 		}
@@ -8513,18 +8519,10 @@ void idPlayer::PerformImpulse( int impulse ) {
 			break;
 		}
 		case IMPULSE_19: {
-/*		
-			// when we're not in single player, IMPULSE_19 is used for showScores
-			// otherwise it does IMPULSE_12 (PDA)
-			if ( !gameLocal.isMultiplayer ) {
-				if ( !objectiveSystemOpen ) {
-					if ( weapon ) {
-						weapon->Hide ();
-					}
-				}
-				ToggleMap();
+			if ( gameLocal.isClient || entityNumber == gameLocal.localClientNum ) 
+			{
+
 			}
-*/
 			break;
 		}
 		case IMPULSE_20: {
@@ -8534,21 +8532,9 @@ void idPlayer::PerformImpulse( int impulse ) {
 			break;
 		}
 		case IMPULSE_21: {
-			if( gameLocal.isServer && gameLocal.gameType == GAME_TOURNEY ) {
-				// only allow a client to join the waiting arena if they are not currently assigned to an arena
+			if( gameLocal.isClient || entityNumber == gameLocal.localClientNum)
+			{
 
-				// removed waiting arena functionality for now
-				/*rvTourneyArena& arena = ((rvTourneyGameState*)gameLocal.mpGame.GetGameState())->GetArena( GetArena() );
-
-				if( this != arena.GetPlayers()[ 0 ] && this != arena.GetPlayers()[ 1 ] ) {
-					if( instance == MAX_ARENAS && !spectating ) {
-						ServerSpectate( true );
-						JoinInstance( ((rvTourneyGameState*)gameLocal.mpGame.GetGameState())->GetNextActiveArena( 0 ) );
-					} else if( spectating ) {
-						JoinInstance( MAX_ARENAS );
-						ServerSpectate( false );
-					}
-				}*/
 			}
 			break;
 		}
@@ -8563,6 +8549,7 @@ void idPlayer::PerformImpulse( int impulse ) {
 		{
 			if (gameLocal.isClient || entityNumber == gameLocal.localClientNum)
 			{
+				common->Printf("%d\n%d\n", hasPill, health);
 				if (bombCount > 0)
 				{
 					DropBomb();
@@ -8571,6 +8558,7 @@ void idPlayer::PerformImpulse( int impulse ) {
 			}
 		
 		}
+
 				
 		case IMPULSE_28: {
  			if ( gameLocal.isClient || entityNumber == gameLocal.localClientNum ) {
@@ -10284,7 +10272,7 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 		}
 
 		int oldHealth = health;
-		health -= damage;
+		health -= 1;
 
 		GAMELOG_ADD ( va("player%d_damage_taken", entityNumber ), damage );
 		GAMELOG_ADD ( va("player%d_damage_%s", entityNumber, damageDefName), damage );
@@ -14134,6 +14122,26 @@ int idPlayer::GetKeyCount( void )
 void idPlayer::KeyCountMinus(void)
 {
 	keyCount--;
+}
+
+void idPlayer::SetHasPill( bool val )
+{
+	hasPill = val;
+}
+
+bool idPlayer::GetHasPill( void )
+{
+	return hasPill;
+}
+
+void idPlayer::UsePill( void )
+{
+	health += 4;
+	if (health > 6)
+	{
+		health = 6;
+	}
+	SetHasPill(false);
 }
 
 // RITUAL END

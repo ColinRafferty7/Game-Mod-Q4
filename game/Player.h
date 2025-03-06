@@ -419,6 +419,8 @@ public:
 	int						coinCount;
 	int						keyCount;
 	int						bombCount;
+
+	bool					hasPill;
 //RAVEN BEGIN
 // asalmon: the eneny the player is most likely currently aiming at
 #ifdef _XBOX
@@ -802,12 +804,16 @@ public:
 	void					ResetCash();
 
 	int						GetAttackSpeed( void );
-	void					SetAttackSpeed( int modifier, float multiplier);
+	void					SetAttackSpeed( int modifier, float multiplierv);
 
 	void					DropBomb( void );
 
 	int						GetKeyCount( void );
 	void					KeyCountMinus( void );
+
+	void					SetHasPill( bool val );
+	bool					GetHasPill( void );
+	void					UsePill( void );
 // RITUAL END
 
 protected:
