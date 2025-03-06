@@ -751,6 +751,10 @@ bool idItem::Pickup( idPlayer *player ) {
 	{
 		player->SetHasPill(true);
 	}
+	if (!idStr::Icmp((idStr(this->GetEntityDefClassName()).c_str()), "item_key"))
+	{
+		player->SetKeyCount(player->GetKeyCount() + 1);
+	}
 	
 	trigger->SetContents( 0 );	
 	

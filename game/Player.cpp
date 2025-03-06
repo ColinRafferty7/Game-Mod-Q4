@@ -14135,14 +14135,24 @@ void idPlayer::DropBomb(void)
 	bomb->GetPhysics()->Activate();
 }
 
+int idPlayer::GetBombCount(void)
+{
+	return bombCount;
+}
+
+void idPlayer::SetBombCount(int val)
+{
+	bombCount = val;
+}
+
 int idPlayer::GetKeyCount( void )
 {
 	return keyCount;
 }
 
-void idPlayer::KeyCountMinus(void)
+void idPlayer::SetKeyCount( int val )
 {
-	keyCount--;
+	keyCount = val;
 }
 
 void idPlayer::SetHasPill( bool val )

@@ -807,9 +807,11 @@ public:
 	void					SetAttackSpeed( int modifier, float multiplierv);
 
 	void					DropBomb( void );
+	int						GetBombCount(void);
+	void					SetBombCount(int val);
 
 	int						GetKeyCount( void );
-	void					KeyCountMinus( void );
+	void					SetKeyCount(int val);
 
 	void					SetHasPill( bool val );
 	bool					GetHasPill( void );
