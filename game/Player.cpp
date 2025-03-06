@@ -3409,6 +3409,27 @@ void idPlayer::UpdateHudStats( idUserInterface *_hud ) {
 		_hud->SetStateFloat	( "player_healthpct", idMath::ClampFloat ( 0.0f, 1.0f, (float)health / (float)inventory.maxHealth ) );
 		_hud->HandleNamedEvent ( "updateHealth" );
 	}
+
+	temp = _hud->State().GetInt ( "key_count", "-1" );
+	if (temp != bombCount)
+	{
+		_hud->SetStateInt("key_count", keyCount);
+		_hud->HandleNamedEvent("updateKeyCount");
+	}
+
+	temp = _hud->State().GetInt("bomb_count", "-1");
+	if (temp != bombCount)
+	{
+		_hud->SetStateInt("bomb_count", bombCount);
+		_hud->HandleNamedEvent("updateBombCount");
+	}
+
+	temp = _hud->State().GetInt("coin_count", "-1");
+	if (temp != bombCount)
+	{
+		_hud->SetStateInt("coin_count", coinCount);
+		_hud->HandleNamedEvent("updateCoinCount");
+	}
 		
 	temp = _hud->State().GetInt ( "player_armor", "-1" );
 	if ( temp != inventory.armor ) {
