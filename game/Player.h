@@ -820,6 +820,8 @@ public:
 	void					UsePill( void );
 
 	int						GetLevel( void );
+
+	void					PrintAllMonsters( void );
 // RITUAL END
 
 protected:

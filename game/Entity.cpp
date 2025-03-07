@@ -640,8 +640,10 @@ void idEntity::Spawn( void ) {
 			FindTargets();
 		}
 	}
-
-	health = (spawnArgs.GetInt("health")); //(1 + (gameLocal.GetLocalPlayer()->GetLevel() * 0.5)));
+	if (gameLocal.GetLocalPlayer())
+	{
+		health = (spawnArgs.GetInt("health")) * (1 + (gameLocal.GetLocalPlayer()->GetLevel() * 0.5));
+	}
 
 	InitDefaultPhysics( origin, axis );
 

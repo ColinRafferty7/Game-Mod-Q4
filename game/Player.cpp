@@ -1832,27 +1832,22 @@ void idPlayer::Spawn( void ) {
 	int nextLevel = rand.RandomInt(5);
 	if (nextLevel == 0)
 	{
-		common->Printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		levelTransition->spawnArgs.Set("nextMap", "game/airdefense1");
 	}
 	if (nextLevel == 1)
 	{
-		common->Printf("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
 		levelTransition->spawnArgs.Set("nextMap", "game/airdefense2");
 	}
 	if (nextLevel == 2)
 	{
-		common->Printf("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
 		levelTransition->spawnArgs.Set("nextMap", "game/hangar1");
 	}
 	if (nextLevel == 3)
 	{
-		common->Printf("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
 		levelTransition->spawnArgs.Set("nextMap", "game/hangar2");
 	}
 	if (nextLevel == 4)
 	{
-		common->Printf("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
 		levelTransition->spawnArgs.Set("nextMap", "game/mcc_landing");
 	}
 
@@ -8604,8 +8599,7 @@ void idPlayer::PerformImpulse( int impulse ) {
 		{
 			if (gameLocal.isClient || entityNumber == gameLocal.localClientNum)
 			{
-				idEntity* levelTransition = gameLocal.FindEntity("levelend");
-				common->Printf("%s\n", idStr(levelTransition->spawnArgs.GetString("nextMap", "nah")).c_str());
+				PrintAllMonsters();
 				if (bombCount > 0)
 				{
 					DropBomb();
@@ -14214,6 +14208,21 @@ void idPlayer::UsePill( void )
 int idPlayer::GetLevel( void )
 {
 	return playerLevel;
+}
+
+void idPlayer::PrintAllMonsters() {
+	idEntity* ent;
+	int count = 0;
+
+	for (int i = 0; i < gameLocal.num_entities; i++) {
+		ent = gameLocal.entities[i];
+		if (ent && ent->IsType(idAI::GetClassType())) {  // Check if entity is an AI (monster)
+			common->Printf("Monster: %s at %s\n", ent->GetName(), ent->GetPhysics()->GetOrigin().ToString());
+			count++;
+		}
+	}
+
+	common->Printf("Total Monsters in Level: %d\n", count);
 }
 //test
 // RITUAL END
