@@ -4690,7 +4690,6 @@ idEntity *idGameLocal::SpawnEntityType( const idTypeInfo &classdef, const idDict
 		assert( bIsClientReadSnapshot );
 	}
 #endif
-
 // RAVEN BEGIN
 // jnewquist: Use accessor for static class type 
 	if ( !classdef.IsType( idEntity::GetClassType() ) ) {

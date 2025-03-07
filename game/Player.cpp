@@ -14215,5 +14215,5 @@ int idPlayer::GetLevel( void )
 {
 	return playerLevel;
 }
-
+//test
 // RITUAL END
