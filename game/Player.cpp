@@ -1822,6 +1822,7 @@ void idPlayer::Spawn( void ) {
 		gameLocal.Error( "entityNum > MAX_CLIENTS for player.  Player may only be spawned with a client." );
 	}
 
+
 	// allow thinking during cinematics
 	cinematic = true;
 
@@ -3423,7 +3424,7 @@ void idPlayer::UpdateHudStats( idUserInterface *_hud ) {
 		_hud->SetStateInt("bomb_count", bombCount);
 		_hud->HandleNamedEvent("updateBombCount");
 	}
-
+	
 	temp = _hud->State().GetInt("coin_count", "-1");
 	if (temp != bombCount)
 	{
@@ -8570,7 +8571,10 @@ void idPlayer::PerformImpulse( int impulse ) {
 		{
 			if (gameLocal.isClient || entityNumber == gameLocal.localClientNum)
 			{
-				common->Printf("%d\n%d\n", hasPill, health);
+				idEntity* levelTransition = gameLocal.FindEntity("target_endlevel_2");
+				common->Printf("%s", idStr(levelTransition->spawnArgs.GetString("nextMap", "Nah")).c_str());
+				levelTransition->spawnArgs.Set("nextMap", "game/convoy1"); 
+				common->Printf("%s", idStr(levelTransition->spawnArgs.GetString("nextMap", "Nah")).c_str()); 
 				if (bombCount > 0)
 				{
 					DropBomb();
