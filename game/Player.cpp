@@ -1351,6 +1351,8 @@ idPlayer::idPlayer() {
 	bombCount = 1;
 
 	hasPill = 0;
+
+	playerLevel = 0;
 }
 
 /*
@@ -1821,6 +1823,8 @@ void idPlayer::Spawn( void ) {
 	if ( entityNumber >= MAX_CLIENTS ) {
 		gameLocal.Error( "entityNum > MAX_CLIENTS for player.  Player may only be spawned with a client." );
 	}
+
+	playerLevel++;
 
 	idEntity* levelTransition = gameLocal.FindEntity("levelend");
 	idRandom rand;
@@ -14205,6 +14209,11 @@ void idPlayer::UsePill( void )
 		health = 6;
 	}
 	SetHasPill(false);
+}
+
+int idPlayer::GetLevel( void )
+{
+	return playerLevel;
 }
 
 // RITUAL END

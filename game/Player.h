@@ -421,6 +421,8 @@ public:
 	int						bombCount;
 
 	bool					hasPill;
+
+	int						playerLevel;
 //RAVEN BEGIN
 // asalmon: the eneny the player is most likely currently aiming at
 #ifdef _XBOX
@@ -816,6 +818,8 @@ public:
 	void					SetHasPill( bool val );
 	bool					GetHasPill( void );
 	void					UsePill( void );
+
+	int						GetLevel( void );
 // RITUAL END
 
 protected:
