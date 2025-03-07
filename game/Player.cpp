@@ -1347,7 +1347,7 @@ idPlayer::idPlayer() {
 	attackSpeed = 300;
 
 	coinCount = 5;
-	keyCount = 1;
+	keyCount = 100;
 	bombCount = 1;
 
 	hasPill = 0;
@@ -1822,6 +1822,35 @@ void idPlayer::Spawn( void ) {
 		gameLocal.Error( "entityNum > MAX_CLIENTS for player.  Player may only be spawned with a client." );
 	}
 
+	idEntity* levelTransition = gameLocal.FindEntity("levelend");
+	idRandom rand;
+	rand.SetSeed(time(NULL));
+	int nextLevel = rand.RandomInt(5);
+	if (nextLevel == 0)
+	{
+		common->Printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		levelTransition->spawnArgs.Set("nextMap", "game/airdefense1");
+	}
+	if (nextLevel == 1)
+	{
+		common->Printf("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+		levelTransition->spawnArgs.Set("nextMap", "game/airdefense2");
+	}
+	if (nextLevel == 2)
+	{
+		common->Printf("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
+		levelTransition->spawnArgs.Set("nextMap", "game/hangar1");
+	}
+	if (nextLevel == 3)
+	{
+		common->Printf("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+		levelTransition->spawnArgs.Set("nextMap", "game/hangar2");
+	}
+	if (nextLevel == 4)
+	{
+		common->Printf("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+		levelTransition->spawnArgs.Set("nextMap", "game/mcc_landing");
+	}
 
 	// allow thinking during cinematics
 	cinematic = true;
@@ -8571,10 +8600,8 @@ void idPlayer::PerformImpulse( int impulse ) {
 		{
 			if (gameLocal.isClient || entityNumber == gameLocal.localClientNum)
 			{
-				idEntity* levelTransition = gameLocal.FindEntity("target_endlevel_2");
-				common->Printf("%s", idStr(levelTransition->spawnArgs.GetString("nextMap", "Nah")).c_str());
-				levelTransition->spawnArgs.Set("nextMap", "game/convoy1"); 
-				common->Printf("%s", idStr(levelTransition->spawnArgs.GetString("nextMap", "Nah")).c_str()); 
+				idEntity* levelTransition = gameLocal.FindEntity("levelend");
+				common->Printf("%s\n", idStr(levelTransition->spawnArgs.GetString("nextMap", "nah")).c_str());
 				if (bombCount > 0)
 				{
 					DropBomb();
