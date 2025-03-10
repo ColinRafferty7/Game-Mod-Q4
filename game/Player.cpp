@@ -1354,7 +1354,6 @@ idPlayer::idPlayer() {
 
 	playerLevel = 0;
 
-	activeItemCharge = gameLocal.time + 30000;
 	activeItemOn = false;
 	itemOffTime = 0;
 }
@@ -1829,6 +1828,7 @@ void idPlayer::Spawn( void ) {
 	}
 
 	playerLevel++;
+	activeItemCharge = gameLocal.time + 30000;
 
 	idEntity* levelTransition = gameLocal.FindEntity("levelend");
 	idRandom rand;
@@ -3458,10 +3458,19 @@ void idPlayer::UpdateHudStats( idUserInterface *_hud ) {
 	}
 	
 	temp = _hud->State().GetInt("coin_count", "-1");
-	if (temp != bombCount)
+	if (temp != coinCount)
 	{
 		_hud->SetStateInt("coin_count", coinCount);
 		_hud->HandleNamedEvent("updateCoinCount");
+	}
+
+	temp = _hud->State().GetInt("item_charge", "0");
+	int charge = idMath::ClampInt(0, 78, (78 * (activeItemCharge - gameLocal.time)) / 30000);
+	if (temp != charge)
+	{
+		common->Printf("Update: %d", temp);
+		_hud->SetStateInt("item_charge", charge);
+		_hud->HandleNamedEvent("updateItemCharge");
 	}
 		
 	temp = _hud->State().GetInt ( "player_armor", "-1" );
@@ -8594,7 +8603,10 @@ void idPlayer::PerformImpulse( int impulse ) {
 		}
 		case IMPULSE_22: {
  			if ( gameLocal.isClient || entityNumber == gameLocal.localClientNum ) {
- 				gameLocal.mpGame.ToggleSpectate( );
+				if (gameLocal.time >= activeItemCharge)
+				{
+					UseActiveItem();
+				}
    			}
    			break;
    		}
@@ -8616,10 +8628,7 @@ void idPlayer::PerformImpulse( int impulse ) {
 				
 		case IMPULSE_28: {
  			if ( gameLocal.isClient || entityNumber == gameLocal.localClientNum ) {
-				if (gameLocal.time >= activeItemCharge)
-				{
-					UseActiveItem();
-				}
+				
    			}
    			break;
    		}
@@ -14258,6 +14267,10 @@ void idPlayer::PrintAllMonsters() {
 	}
 
 	common->Printf("Total Monsters in Level: %d\n", count);
+
+	common->Printf("%d\n%d\n", activeItemCharge, gameLocal.time);
+	common->Printf("%d\n", activeItemCharge - gameLocal.time);
+	common->Printf("%d\n", (92 * (activeItemCharge - gameLocal.time)) / 30000);
 }
 //test
 // RITUAL END
