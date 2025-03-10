@@ -1353,6 +1353,10 @@ idPlayer::idPlayer() {
 	hasPill = 0;
 
 	playerLevel = 0;
+
+	activeItemCharge = gameLocal.time + 30000;
+	activeItemOn = false;
+	itemOffTime = 0;
 }
 
 /*
@@ -8612,7 +8616,10 @@ void idPlayer::PerformImpulse( int impulse ) {
 				
 		case IMPULSE_28: {
  			if ( gameLocal.isClient || entityNumber == gameLocal.localClientNum ) {
- 				gameLocal.mpGame.CastVote( gameLocal.localClientNum, true );
+				if (gameLocal.time >= activeItemCharge)
+				{
+					UseActiveItem();
+				}
    			}
    			break;
    		}
@@ -9343,6 +9350,11 @@ Called every tic for each player
 */
 void idPlayer::Think( void ) {
 	renderEntity_t *headRenderEnt;
+
+	if (activeItemOn && gameLocal.time >= itemOffTime)
+	{
+		ResetActiveItem();
+	}
  
 	if ( talkingNPC ) {
 		if ( !talkingNPC.IsValid() ) {
@@ -14217,6 +14229,20 @@ void idPlayer::UsePill( void )
 int idPlayer::GetLevel( void )
 {
 	return playerLevel;
+}
+
+void idPlayer::UseActiveItem( void )
+{
+	attackSpeed = 75;
+	activeItemOn = true;
+	itemOffTime = gameLocal.time + 10000;
+}
+
+void idPlayer::ResetActiveItem( void )
+{
+	attackSpeed = 300;
+	activeItemCharge = gameLocal.time + 30000;
+	activeItemOn = false;
 }
 
 void idPlayer::PrintAllMonsters() {

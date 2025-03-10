@@ -423,6 +423,11 @@ public:
 	bool					hasPill;
 
 	int						playerLevel;
+
+	int						activeItemCharge;
+	bool					activeItemOn;
+	int						itemOffTime;
+
 //RAVEN BEGIN
 // asalmon: the eneny the player is most likely currently aiming at
 #ifdef _XBOX
@@ -826,6 +831,8 @@ public:
 
 	void					PrintAllMonsters( void );
 
+	void					UseActiveItem( void );
+	void					ResetActiveItem( void );
 
 // RITUAL END
 
