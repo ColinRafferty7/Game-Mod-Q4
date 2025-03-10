@@ -815,6 +815,9 @@ public:
 	int						GetKeyCount( void );
 	void					SetKeyCount(int val);
 
+	int						GetCoinCount(void);
+	void					SetCoinCount(int val);
+
 	void					SetHasPill( bool val );
 	bool					GetHasPill( void );
 	void					UsePill( void );
@@ -822,6 +825,8 @@ public:
 	int						GetLevel( void );
 
 	void					PrintAllMonsters( void );
+
+
 // RITUAL END
 
 protected:

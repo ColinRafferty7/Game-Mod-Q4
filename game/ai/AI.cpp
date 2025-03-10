@@ -877,6 +877,8 @@ void idAI::Spawn( void ) {
 		gameLocal.Warning( "Unhidden AI placed in map (will be constantly active): %s (%s)", name.c_str(), GetPhysics()->GetOrigin().ToString() );
 	}
 
+	//Use maps.def to take give random spawn location
+
 	Begin ( );
 
 	// RAVEN BEGIN

@@ -674,13 +674,28 @@ bool idItem::Pickup( idPlayer *player ) {
 	} else {
 		StartSound( "snd_acquire", SND_CHANNEL_ITEM, 0, false, NULL );
 	}
-		
+
 	// trigger our targets
 	ActivateTargets( player );
 
+
 	player->lastPickupTime = gameLocal.time;
 
-	common->Printf("Pre\n");
+	if (spawnArgs.GetBool("purchase", "0"))
+	{
+		common->Printf("First\n");
+		if (player->GetCoinCount() >= spawnArgs.GetInt("price", "-1"))
+		{
+			common->Printf("Second\n");
+			player->SetCoinCount(-1 * spawnArgs.GetInt("price", "-1"));
+		}
+		else
+		{
+			common->Printf("Third\n");
+			return false;
+		}
+	}
+
 	if (!idStr::Icmp((idStr(this->GetEntityDefClassName()).c_str()), "item_health_pill") && !player->GetHasPill())
 	{
 		player->SetHasPill(true);
