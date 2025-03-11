@@ -336,7 +336,7 @@ void idInventory::RestoreInventory( idPlayer *owner, const idDict &dict ) {
 	//Clear();
 
 	// health/armor
-	maxHealth		= dict.GetInt( "maxhealth", "6" );
+	maxHealth		= 6;
 	armor			= dict.GetInt( "armor", "50" );
 	maxarmor		= dict.GetInt( "maxarmor", "100" );
 
@@ -3468,9 +3468,15 @@ void idPlayer::UpdateHudStats( idUserInterface *_hud ) {
 	int charge = idMath::ClampInt(0, 78, (78 * (activeItemCharge - gameLocal.time)) / 30000);
 	if (temp != charge)
 	{
-		common->Printf("Update: %d", temp);
 		_hud->SetStateInt("item_charge", charge);
 		_hud->HandleNamedEvent("updateItemCharge");
+	}
+
+	temp = _hud->State().GetInt("num_health", "-1");
+	if (temp != health)
+	{
+		_hud->SetStateInt("num_health", health);
+		_hud->HandleNamedEvent("updateNumHealth");
 	}
 		
 	temp = _hud->State().GetInt ( "player_armor", "-1" );
@@ -9364,6 +9370,8 @@ void idPlayer::Think( void ) {
 	{
 		ResetActiveItem();
 	}
+
+	health = idMath::ClampInt(1, 6, health);
  
 	if ( talkingNPC ) {
 		if ( !talkingNPC.IsValid() ) {
@@ -11261,7 +11269,7 @@ idPlayer::Event_SetHealth
 =============
 */
 void idPlayer::Event_SetHealth( float newHealth ) {
-	health = idMath::ClampInt( 1 , inventory.maxHealth, newHealth );
+	health = idMath::ClampInt( 1 , 6, newHealth );
 }
 /*
 =============
