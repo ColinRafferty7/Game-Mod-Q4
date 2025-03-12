@@ -1348,7 +1348,7 @@ idPlayer::idPlayer() {
 
 	coinCount = 5;
 	keyCount = 100;
-	bombCount = 1;
+	bombCount = 10;
 
 	hasPill = 0;
 
@@ -1833,14 +1833,14 @@ void idPlayer::Spawn( void ) {
 	idEntity* levelTransition = gameLocal.FindEntity("levelend");
 	idRandom rand;
 	rand.SetSeed(time(NULL));
-	int nextLevel = rand.RandomInt(5);
+	int nextLevel = rand.RandomInt(4);
 	if (nextLevel == 0)
 	{
 		levelTransition->spawnArgs.Set("nextMap", "game/airdefense1");
 	}
 	if (nextLevel == 1)
 	{
-		levelTransition->spawnArgs.Set("nextMap", "game/airdefense2");
+		levelTransition->spawnArgs.Set("nextMap", "game/mcc_landing");
 	}
 	if (nextLevel == 2)
 	{
@@ -1852,7 +1852,7 @@ void idPlayer::Spawn( void ) {
 	}
 	if (nextLevel == 4)
 	{
-		levelTransition->spawnArgs.Set("nextMap", "game/mcc_landing");
+		levelTransition->spawnArgs.Set("nextMap", "game/airdefense2");
 	}
 
 	// allow thinking during cinematics
